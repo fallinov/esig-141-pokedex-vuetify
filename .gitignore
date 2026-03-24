@@ -22,3 +22,4 @@ pnpm-debug.log*
 *.sw?
 /export_code.md
 /AGENTS.md
+playwright/

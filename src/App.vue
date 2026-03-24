@@ -7,9 +7,9 @@
     <!--
     Menu principal
       * Affiche la barre de navigation principale (header)
-      * Inclut le composant personnalisé MenuPrincipal créer dans le fichier `src/components/AppHeader.vue`
+      * Inclut le composant personnalisé AppHeader créé dans le fichier `src/components/AppHeader.vue`
     -->
-    <menu-principal />
+    <app-header />
 
     <!--
     Section principale de l'application
@@ -20,38 +20,34 @@
     <v-main>
       <router-view />
     </v-main>
+
     <!--
     Pied de page de l'application
-      * <v-footer> : Composant Vuetify pour un pied de page réactif et stylisé.
-      * <div> : Conteneur pour le contenu du pied de page.
-        - class="px-4" : Ajoute un padding horizontal (4 * 4px = 16px) pour espacer le contenu des bords.
-        - class="text-center" : Centre le texte horizontalement.
-        - class="w-100" : Assure que le conteneur occupe toute la largeur disponible.
+      * Composant AppFooter réutilisable avec un slot par défaut
     -->
-    <v-footer>
-      <div class="px-4 text-center w-100">2024 - Pokedex</div>
-    </v-footer>
+    <app-footer />
   </v-app>
 </template>
 
 <script setup>
-  // Importation du composant MenuPrincipal pour l'en-tête de l'application
-  import MenuPrincipal from '@/components/AppHeader.vue'
-  // Importation du lifecycle hook `onMounted` pour exécuter du code après que le composant a été monté
-  import { onMounted } from 'vue'
-  // Importation des magasins d'état pour l'authentification et les Pokémon
-  import { useAuthStore } from '@/stores/authStore'
-  import { usePokemonStore } from '@/stores/pokemonStore'
+// Importation des composants de layout
+import AppHeader from '@/components/AppHeader.vue'
+import AppFooter from '@/components/AppFooter.vue'
+// Importation du lifecycle hook `onMounted` pour exécuter du code après que le composant a été monté
+import { onMounted } from 'vue'
+// Importation des magasins d'état pour l'authentification et les Pokémon
+import { useAuthStore } from '@/stores/authStore'
+import { usePokemonStore } from '@/stores/pokemonStore'
 
-  // Actions à effectuer après le montage du composant (onMounted)
-  onMounted(async () => {
-    // Récupération du magasin d'Authentification
-    const authStore = useAuthStore()
-    // Récupération du token d'authentification depuis le localStorage
-    authStore.loadToken()
+// Actions à effectuer après le montage du composant (onMounted)
+onMounted(async () => {
+  // Récupération du magasin d'Authentification
+  const authStore = useAuthStore()
+  // Récupération du token d'authentification depuis le localStorage
+  authStore.loadToken()
 
-    // Récupération du magasin des Pokémon
-    const pokemonStore = usePokemonStore()
-    await pokemonStore.init()
-  })
+  // Récupération du magasin des Pokémon
+  const pokemonStore = usePokemonStore()
+  await pokemonStore.init()
+})
 </script>
