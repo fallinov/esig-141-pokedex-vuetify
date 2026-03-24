@@ -37,6 +37,9 @@ jobs:
           VITE_BASE_URL: /${{ github.event.repository.name }}/
           VITE_API_URL: https://2025-sfa-pokedex-api.vercel.app
 
+      - name: SPA fallback for GitHub Pages
+        run: cp dist/index.html dist/404.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
