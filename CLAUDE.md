@@ -125,9 +125,10 @@ Config : `plugin:vue/vue3-recommended` + `eslint:recommended` (pas `eslint-confi
 
 ## Déploiement
 
-- **GitHub Pages** : https://fallinov.github.io/esig-141-pokedex-vuetify/
+- **Frontend (GitHub Pages)** : https://fallinov.github.io/esig-141-pokedex-vuetify/
+- **API (Vercel)** : https://2025-sfa-pokedex-api.vercel.app
 - **Workflow** : `.github/workflows/deploy.yml` (déclenché sur push vers `solution`)
-- **Note** : l'API ne tourne pas sur GitHub Pages, seul le frontend est visible
+- Le workflow injecte `VITE_API_URL` vers l'API Vercel et copie `404.html` pour le SPA fallback
 
 ## Plan détaillé
 

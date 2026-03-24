@@ -10,6 +10,8 @@
 - [x] Séq 9 : UX, responsive, polish (thème Pokémon, skeleton, snackbar)
 - [x] Validation : build OK, Playwright desktop + mobile, console propre
 - [x] Déploiement GitHub Pages
+- [x] API déployée sur Vercel (https://2025-sfa-pokedex-api.vercel.app)
+- [x] SPA fallback 404.html pour routes dynamiques
 
 ## Branche main (squelette)
 

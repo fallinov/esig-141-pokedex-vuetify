@@ -27,3 +27,17 @@
 **Erreur** : "Branch solution is not allowed to deploy to github-pages due to environment protection rules"
 **Correction** : Ajouter une deployment branch policy via `gh api repos/.../environments/github-pages/deployment-branch-policies -X POST -f name=solution`
 **Règle** : Quand GitHub Pages est activé, seule la branche par défaut (main) est autorisée. Il faut explicitement ajouter les autres branches via l'API ou le dashboard
+
+## 2026-03-25 — SPA fallback nécessaire sur GitHub Pages
+
+**Contexte** : Routes dynamiques (`/pokemon/:id`) sur GitHub Pages
+**Erreur** : GitHub Pages retourne 404 pour toutes les URLs qui ne correspondent pas à un fichier statique
+**Correction** : Ajouter `cp dist/index.html dist/404.html` dans le workflow CI après le build
+**Règle** : Tout SPA déployé sur GitHub Pages nécessite un `404.html` identique à `index.html` pour que le routing côté client fonctionne
+
+## 2026-03-25 — Express sur Vercel : filesystem read-only
+
+**Contexte** : Déploiement de l'API Express sur Vercel (serverless)
+**Erreur** : `fs.writeFileSync()` échoue en serverless car le filesystem est read-only
+**Correction** : Store en mémoire avec try/catch sur l'écriture fichier. Les mutations persistent pendant la session mais reviennent à l'état initial au cold start
+**Règle** : En serverless, ne jamais compter sur l'écriture fichier pour persister des données. Utiliser un cache mémoire ou une BDD externe
