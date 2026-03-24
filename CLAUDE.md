@@ -88,6 +88,47 @@ La version finale est construite feature par feature, dans l'ordre des séquence
 | 8 | Auth + guards + delete | authStore.js, login.vue, beforeEach |
 | 9 | UX, responsive, polish | thème, skeleton loader, snackbar |
 
+## Structure de la solution (branche solution)
+
+```
+src/
+├── components/
+│   ├── AppHeader.vue          # Navigation + drawer mobile + auth conditionnelle
+│   ├── AppFooter.vue          # Footer avec slot
+│   ├── PokemonCard.vue        # Carte Pokémon (image, types, favori)
+│   ├── PokemonTypesChips.vue  # Chips colorés des types
+│   └── PokemonStats.vue       # Barres de progression (HP, ATK, DEF, SPD)
+├── pages/
+│   ├── index.vue              # Accueil (grille + recherche/filtre/tri)
+│   ├── a-propos.vue           # Page statique + dialogue carte Kanto
+│   ├── favoris.vue            # Liste des Pokémon favoris
+│   ├── ajouter.vue            # Formulaire v-form + validation + POST
+│   ├── login.vue              # Formulaire connexion (auth factice)
+│   ├── pokemon/[id].vue       # Détail Pokémon (stats, types, supprimer)
+│   └── [...path].vue          # Page 404
+├── stores/
+│   ├── pokemonStore.js        # CRUD Pokémon + favoris (Options API)
+│   └── authStore.js           # Auth factice (sacha@pokemon.com / pika)
+├── plugins/
+│   ├── axios.js               # Instance Axios (baseURL, headers, setAuthToken)
+│   ├── vuetify.js             # Thème Pokémon (rouge/bleu/jaune)
+│   └── index.js               # Registre des plugins
+├── router/
+│   └── index.js               # Routes auto + guard beforeEach
+└── utils/
+    └── imageUrl.js            # Helper pour URLs images Pokémon
+```
+
+## ESLint
+
+Config : `plugin:vue/vue3-recommended` + `eslint:recommended` (pas `eslint-config-vuetify` qui a des problèmes de compatibilité avec ESLint 8).
+
+## Déploiement
+
+- **GitHub Pages** : https://fallinov.github.io/esig-141-pokedex-vuetify/
+- **Workflow** : `.github/workflows/deploy.yml` (déclenché sur push vers `solution`)
+- **Note** : l'API ne tourne pas sur GitHub Pages, seul le frontend est visible
+
 ## Plan détaillé
 
 Voir `~/.claude/plans/hashed-twirling-stallman.md` pour le plan d'implémentation complet.
