@@ -35,7 +35,7 @@ jobs:
         run: npm run build
         env:
           VITE_BASE_URL: /${{ github.event.repository.name }}/
-          VITE_API_URL: https://pokedex-api.example.com
+          VITE_API_URL: https://2025-sfa-pokedex-api.vercel.app
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
