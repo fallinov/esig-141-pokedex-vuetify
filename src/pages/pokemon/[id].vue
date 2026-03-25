@@ -97,8 +97,9 @@
         <v-btn
           :icon="pokemonStore.isFavorite(pokemon) ? 'mdi-heart' : 'mdi-heart-outline'"
           :color="pokemonStore.isFavorite(pokemon) ? 'red' : ''"
+          :class="{ 'favorite-active': pokemonStore.isFavorite(pokemon) }"
           variant="text"
-          @click="pokemonStore.toggleFavorite(pokemon)"
+          @click="handleToggleFavorite()"
         />
 
         <v-spacer />
@@ -204,6 +205,19 @@ const snackbar = ref({
   message: '',
   color: 'success',
 })
+
+/**
+ * Toggle le favori et affiche un snackbar de confirmation
+ */
+function handleToggleFavorite () {
+  const wasFavorite = pokemonStore.isFavorite(pokemon.value)
+  pokemonStore.toggleFavorite(pokemon.value)
+  snackbar.value = {
+    show: true,
+    message: wasFavorite ? 'Retiré des favoris' : 'Ajouté aux favoris',
+    color: 'primary',
+  }
+}
 
 /**
  * Gère la suppression du Pokémon
