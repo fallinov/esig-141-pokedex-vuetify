@@ -66,6 +66,7 @@
       <v-btn
         :icon="pokemonStore.isFavorite(pokemon) ? 'mdi-heart' : 'mdi-heart-outline'"
         :color="pokemonStore.isFavorite(pokemon) ? 'red' : ''"
+        :class="{ 'favorite-active': pokemonStore.isFavorite(pokemon) }"
         variant="text"
         @click.stop.prevent="handleToggleFavorite()"
       />
@@ -119,3 +120,10 @@ function handleToggleFavorite () {
   showSnackbar.value = true
 }
 </script>
+
+<style scoped>
+/* Animation du coeur quand un Pokémon est ajouté aux favoris */
+.favorite-active {
+  animation: heartbeat 0.6s ease-in-out;
+}
+</style>
