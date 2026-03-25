@@ -41,3 +41,10 @@
 **Erreur** : `fs.writeFileSync()` échoue en serverless car le filesystem est read-only
 **Correction** : Store en mémoire avec try/catch sur l'écriture fichier. Les mutations persistent pendant la session mais reviennent à l'état initial au cold start
 **Règle** : En serverless, ne jamais compter sur l'écriture fichier pour persister des données. Utiliser un cache mémoire ou une BDD externe
+
+## 2026-03-25 — Fichier PNG déguisé en .svg
+
+**Contexte** : Le logo pokeball.svg ne s'affichait pas sur certains navigateurs (Firefox, Safari)
+**Erreur** : Le fichier `pokeball.svg` était en réalité un PNG de 39 KB renommé en `.svg`. `file pokeball.svg` retournait "PNG image data". Certains navigateurs refusent d'afficher un PNG servi avec un type MIME SVG
+**Correction** : Remplacé par un vrai SVG vectoriel (700 octets, formes géométriques simples)
+**Règle** : Toujours vérifier le contenu réel d'un fichier avec `file <nom>` avant de le commiter. L'extension ne garantit pas le format
