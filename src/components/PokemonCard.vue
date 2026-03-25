@@ -1,8 +1,6 @@
 <template>
   <!--
   Carte d'un Pokémon
-    * Composant réutilisable qui affiche les informations principales d'un Pokémon
-    * Utilisé dans la grille de la page d'accueil et la page favoris
     * :to crée un lien vers la page de détail du Pokémon
     * hover ajoute un effet d'élévation au survol
   -->
@@ -15,12 +13,7 @@
     Image du Pokémon
       * height="200" fixe la hauteur de l'image
       * cover remplit l'espace disponible en gardant les proportions
-    -->
-    <!--
-    Image du Pokémon
-      * height="200" fixe la hauteur de l'image
-      * cover remplit l'espace disponible en gardant les proportions
-      * Le template #placeholder affiche un skeleton loader pendant le chargement
+      * Le template #placeholder affiche un loader pendant le chargement
     -->
     <v-img
       :src="getImageUrl(pokemon.img)"
@@ -57,27 +50,40 @@
 
     <!--
     Actions de la carte
-      * Bouton favori avec icône cœur
+      * v-spacer pousse le bouton à droite
+      * Le bouton coeur toggle le favori
     -->
     <v-card-actions>
       <v-spacer />
       <!--
       Bouton pour ajouter/retirer des favoris
         * @click.stop.prevent empêche la navigation vers la page de détail
-        * .stop arrête la propagation de l'événement
+        * .stop arrête la propagation de l'événement (ne remonte pas à v-card)
         * .prevent empêche le comportement par défaut du router-link
-        * L'icône change selon l'état favori (cœur plein ou vide)
+        * L'icône change selon l'état favori (coeur plein ou vide)
         * La couleur change : rouge si favori, grise sinon
-        * La classe 'favorite-active' déclenche l'animation heartbeat
       -->
       <v-btn
         :icon="pokemonStore.isFavorite(pokemon) ? 'mdi-heart' : 'mdi-heart-outline'"
         :color="pokemonStore.isFavorite(pokemon) ? 'red' : ''"
-        :class="{ 'favorite-active': pokemonStore.isFavorite(pokemon) }"
         variant="text"
-        @click.stop.prevent="pokemonStore.toggleFavorite(pokemon)"
+        @click.stop.prevent="handleToggleFavorite()"
       />
     </v-card-actions>
+
+    <!--
+    Snackbar de confirmation
+      * v-model contrôle l'affichage
+      * timeout="2000" masque automatiquement après 2 secondes
+      * Le message change selon l'action (ajout ou retrait)
+    -->
+    <v-snackbar
+      v-model="showSnackbar"
+      :timeout="2000"
+      color="primary"
+    >
+      {{ snackbarMessage }}
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -88,9 +94,9 @@ import PokemonTypesChips from '@/components/PokemonTypesChips.vue'
 
 /**
  * Props du composant PokemonCard
- * @property {Object} pokemon - Objet Pokémon avec id, name, level, img, types, etc.
+ * @property {Object} pokemon - Objet Pokémon avec id, name, level, img, etc.
  */
-defineProps({
+const { pokemon } = defineProps({
   pokemon: {
     type: Object,
     required: true,
@@ -98,11 +104,18 @@ defineProps({
 })
 
 const pokemonStore = usePokemonStore()
-</script>
 
-<style scoped>
-/* Animation du cœur quand un Pokémon est ajouté aux favoris */
-.favorite-active {
-  animation: heartbeat 0.6s ease-in-out;
+// Snackbar de confirmation
+const showSnackbar = ref(false)
+const snackbarMessage = ref('')
+
+/**
+ * Toggle le favori et affiche un snackbar de confirmation
+ */
+function handleToggleFavorite () {
+  const wasFavorite = pokemonStore.isFavorite(pokemon)
+  pokemonStore.toggleFavorite(pokemon)
+  snackbarMessage.value = wasFavorite ? 'Retiré des favoris' : 'Ajouté aux favoris'
+  showSnackbar.value = true
 }
-</style>
+</script>
