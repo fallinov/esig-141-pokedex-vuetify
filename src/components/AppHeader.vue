@@ -24,6 +24,7 @@
 const menuItems = [
   { title: 'Accueil', path: '/', icon: 'mdi-pokeball' },
   { title: 'Favoris', path: '/favoris', icon: 'mdi-heart' },
+  { title: 'Ajouter', path: '/ajouter', icon: 'mdi-plus-circle' },
   { title: 'À propos', path: '/a-propos', icon: 'mdi-information' },
 ]
 </script>

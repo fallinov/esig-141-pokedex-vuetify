@@ -146,5 +146,38 @@ export const usePokemonStore = defineStore('pokemon', {
         this.saveFavorites()
       }
     },
+
+    async addPokemon (pokemonData) {
+      if (!pokemonData.name || !pokemonData.level) {
+        return {
+          success: false,
+          message: 'Le nom et le niveau du Pokémon sont obligatoires',
+        }
+      }
+
+      this.isLoading = true
+      try {
+        const response = await api.post('/pokemons', pokemonData)
+        let newPokemon = response.data?.data || response.data
+        if (newPokemon) {
+          this.pokemons.push(newPokemon)
+        }
+        return {
+          success: true,
+          message: 'Pokémon ajouté avec succès !',
+        }
+      } catch (error) {
+        let errorMessage = 'Erreur lors de l\'ajout du Pokémon'
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message
+        }
+        return {
+          success: false,
+          message: errorMessage,
+        }
+      } finally {
+        this.isLoading = false
+      }
+    },
   },
 })
