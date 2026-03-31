@@ -179,5 +179,30 @@ export const usePokemonStore = defineStore('pokemon', {
         this.isLoading = false
       }
     },
+
+    async deletePokemon (pokemonId) {
+      this.isLoading = true
+      try {
+        await api.delete(`/pokemons/${pokemonId}`)
+        this.pokemons = this.pokemons.filter(p => p.id !== pokemonId)
+        this.favorites = this.favorites.filter(fid => fid !== pokemonId)
+        this.saveFavorites()
+        return {
+          success: true,
+          message: 'Pokémon supprimé avec succès !',
+        }
+      } catch (error) {
+        let errorMessage = 'Erreur lors de la suppression du Pokémon'
+        if (error.response?.data?.message) {
+          errorMessage = error.response.data.message
+        }
+        return {
+          success: false,
+          message: errorMessage,
+        }
+      } finally {
+        this.isLoading = false
+      }
+    },
   },
 })

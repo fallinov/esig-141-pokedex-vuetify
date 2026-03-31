@@ -5,10 +5,20 @@
  */
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { routes } from 'vue-router/auto-routes'
+import { useAuthStore } from '@/stores/authStore'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+})
+
+const protectedRoutes = ['/ajouter']
+
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+  if (protectedRoutes.includes(to.path) && !authStore.isAuthenticated) {
+    return { path: '/login' }
+  }
 })
 
 // Workaround pour https://github.com/vitejs/vite/issues/11804
