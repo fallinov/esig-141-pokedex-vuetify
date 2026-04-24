@@ -212,18 +212,8 @@ export const usePokemonStore = defineStore('pokemon', {
         // Le token d'authentification est automatiquement ajouté par la configuration d'Axios
         const response = await api.get('/types')
 
-        // ÉTAPE 3 : Traitement de la réponse
-        // L'API peut retourner les données dans différents formats, on s'adapte
-        if (response.data && response.data.data) {
-          // Format : { data: [...] }
-          this.types = response.data.data
-        } else if (response.data) {
-          // Format direct : [...]
-          this.types = response.data
-        } else {
-          // Format inattendu, on met un tableau vide
-          this.types = []
-        }
+        // ÉTAPE 3 : Stocker les types reçus dans le state
+        this.types = response.data
 
         console.log('✅ Types de Pokémon chargés:', this.types.length, 'éléments')
       } catch (error) {
@@ -267,14 +257,8 @@ export const usePokemonStore = defineStore('pokemon', {
         // ÉTAPE 2 : Requête GET vers l'API
         const response = await api.get('/pokemons')
 
-        // ÉTAPE 3 : Traitement de la réponse
-        if (response.data && response.data.data) {
-          this.pokemons = response.data.data
-        } else if (response.data) {
-          this.pokemons = response.data
-        } else {
-          this.pokemons = []
-        }
+        // ÉTAPE 3 : Stocker les Pokémon reçus dans le state
+        this.pokemons = response.data
 
         console.log('✅ Pokémon chargés:', this.pokemons.length, 'éléments')
 
@@ -333,19 +317,10 @@ export const usePokemonStore = defineStore('pokemon', {
         // ÉTAPE 3 : Envoyer les données à l'API
         const response = await api.post('/pokemons', pokemonData)
 
-        // ÉTAPE 4 : Récupérer le Pokémon créé depuis la réponse
-        let newPokemon = null
-        if (response.data && response.data.data) {
-          newPokemon = response.data.data
-        } else if (response.data) {
-          newPokemon = response.data
-        }
-
-        // ÉTAPE 5 : Ajouter le nouveau Pokémon à la liste locale
-        if (newPokemon) {
-          this.pokemons.push(newPokemon)
-          console.log('✅ Pokémon créé avec succès:', newPokemon.name)
-        }
+        // ÉTAPE 4 : Ajouter le nouveau Pokémon à la liste locale
+        const newPokemon = response.data
+        this.pokemons.push(newPokemon)
+        console.log('✅ Pokémon créé avec succès:', newPokemon.name)
 
         return {
           success: true,
@@ -393,12 +368,7 @@ export const usePokemonStore = defineStore('pokemon', {
         const response = await api.put(`/pokemons/${pokemonId}`, updatedData)
 
         // Récupérer les données mises à jour
-        let updatedPokemon = null
-        if (response.data && response.data.data) {
-          updatedPokemon = response.data.data
-        } else if (response.data) {
-          updatedPokemon = response.data
-        }
+        const updatedPokemon = response.data
 
         // Mettre à jour le Pokémon dans la liste locale
         if (updatedPokemon) {
