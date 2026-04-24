@@ -65,13 +65,8 @@ export const usePokemonStore = defineStore('pokemon', {
       if (withLoader) this.isLoading = true
       try {
         const response = await api.get('/types')
-        if (response.data && response.data.data) {
-          this.types = response.data.data
-        } else if (response.data) {
-          this.types = response.data
-        } else {
-          this.types = []
-        }
+
+        this.types = response.data
       } catch (error) {
         console.error('Erreur lors du chargement des types:', error.message)
         this.types = []
@@ -84,13 +79,8 @@ export const usePokemonStore = defineStore('pokemon', {
       if (withLoader) this.isLoading = true
       try {
         const response = await api.get('/pokemons')
-        if (response.data && response.data.data) {
-          this.pokemons = response.data.data
-        } else if (response.data) {
-          this.pokemons = response.data
-        } else {
-          this.pokemons = []
-        }
+
+        this.pokemons = response.data
         this.cleanupFavorites()
       } catch (error) {
         console.error('Erreur lors du chargement des Pokémon:', error.message)
